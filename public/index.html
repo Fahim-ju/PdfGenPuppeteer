@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Generator - Debug Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .panel {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(56, 239, 125, 0.4);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 800px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #f5f5f5;
+        }
+
+        .data-editor {
+            width: 100%;
+            height: 400px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+        }
+
+        .status {
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .status.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .info-box h3 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📄 PDF Generator Debug Tool</h1>
+        
+        <div class="panel">
+            <div class="info-box">
+                <h3>How to use:</h3>
+                <ul>
+                    <li><strong>View PDF:</strong> Generate and view PDF embedded in page</li>
+                    <li><strong>Open PDF in New Tab:</strong> Generate and open PDF in a new browser tab (most reliable)</li>
+                    <li><strong>Download PDF:</strong> Generate and download PDF file</li>
+                    <li><strong>Edit Data:</strong> Modify the JSON data to test different values</li>
+                    <li><strong>Preview Template:</strong> View the HTML template in a new tab</li>
+                </ul>
+            </div>
+
+            <div class="controls">
+                <button class="btn-primary" onclick="generatePDF()">
+                    <span id="viewBtnText">📄 View PDF</span>
+                </button>
+                <button class="btn-primary" onclick="openPDFInNewTab()" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <span id="newTabBtnText">🔗 Open PDF in New Tab</span>
+                </button>
+                <button class="btn-success" onclick="downloadPDF()">
+                    <span id="downloadBtnText">⬇️ Download PDF</span>
+                </button>
+                <button class="btn-info" onclick="previewTemplate()">
+                    🔍 Preview Template
+                </button>
+                <button class="btn-warning" onclick="loadSampleData()">
+                    🔄 Reset Data
+                </button>
+            </div>
+
+            <div id="status" class="status"></div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('viewer')">PDF Viewer</button>
+                <button class="tab" onclick="switchTab('editor')">Data Editor</button>
+            </div>
+
+            <div id="viewer-tab" class="tab-content active">
+                <div id="pdfContainer" style="width: 100%; height: 800px; border: 2px solid #ddd; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                    <p style="color: #666;">Click "View PDF" to generate and display the PDF</p>
+                </div>
+            </div>
+
+            <div id="editor-tab" class="tab-content">
+                <h3 style="margin-bottom: 15px;">Edit Sample Data (JSON)</h3>
+                <textarea id="dataEditor" class="data-editor"></textarea>
+                <button class="btn-primary" onclick="saveData()" style="margin-top: 15px;">
+                    💾 Save Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentData = null;
+
+        // Load sample data on page load
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadSampleData();
+        });
+
+        async function loadSampleData() {
+            try {
+                const response = await fetch('/api/sample-data');
+                currentData = await response.json();
+                document.getElementById('dataEditor').value = JSON.stringify(currentData, null, 2);
+                showStatus('Sample data loaded successfully', 'success');
+            } catch (error) {
+                showStatus('Error loading sample data: ' + error.message, 'error');
+            }
+        }
+
+        async function saveData() {
+            try {
+                const dataText = document.getElementById('dataEditor').value;
+                currentData = JSON.parse(dataText);
+                
+                await fetch('/api/update-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(currentData)
+                });
+                
+                showStatus('Data saved successfully', 'success');
+            } catch (error) {
+                showStatus('Error saving data: ' + error.message, 'error');
+            }
+        }
+
+        async function generatePDF() {
+            const button = document.querySelector('.btn-primary');
+            const btnText = document.getElementById('viewBtnText');
+            
+            try {
+                button.disabled = true;
+                btnText.innerHTML = '<span class="loading"></span> Generating...';
+                
+                const dataText = document.getElementById('dataEditor').value;
+                let data;
+                
+                try {
+                    data = JSON.parse(dataText);
+                } catch (parseError) {
+                    throw new Error('Invalid JSON data: ' + parseError.message);
+                }
+                
+                const response = await fetch('/api/generate-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Failed to generate PDF: ${errorText}`);
+                }
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                
+                // Clear previous content
+                const container = document.getElementById('pdfContainer');
+                container.innerHTML = '';
+                
+                // Create embed element for PDF
+                const embed = document.createElement('embed');
+                embed.src = url;
+                embed.type = 'application/pdf';
+                embed.style.width = '100%';
+                embed.style.height = '100%';
+                
+                // Create download link as fallback
+                const downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                downloadLink.download = `purchase-order-${data.PO_NUMBER || 'document'}.pdf`;
+                downloadLink.textContent = 'Click here to download PDF if it doesn\'t display';
+                downloadLink.style.cssText = 'display: block; text-align: center; padding: 20px; color: #667eea; font-weight: 600;';
+                
+                container.appendChild(embed);
+                container.appendChild(downloadLink);
+                
+                switchTab('viewer');
+                showStatus('PDF generated successfully! If it doesn\'t display, use the download link.', 'success');
+                
+            } catch (error) {
+                console.error('PDF Generation Error:', error);
+                showStatus('Error generating PDF: ' + error.message, 'error');
+            } finally {
+                button.disabled = false;
+                btnText.innerHTML = '📄 View PDF';
+            }
+        }
+
+        async function downloadPDF() {
+            const button = document.querySelector('.btn-success');
+            const btnText = document.getElementById('downloadBtnText');
+            
+            try {
+                button.disabled = true;
+                btnText.innerHTML = '<span class="loading"></span> Generating...';
+                
+                const dataText = document.getElementById('dataEditor').value;
+                const data = JSON.parse(dataText);
+                
+                const response = await fetch('/api/download-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to generate PDF');
+                }
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `purchase-order-${data.PO_NUMBER || 'document'}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showStatus('PDF downloaded successfully', 'success');
+                
+            } catch (error) {
+                showStatus('Error downloading PDF: ' + error.message, 'error');
+            } finally {
+                button.disabled = false;
+                btnText.innerHTML = '⬇️ Download PDF';
+            }
+        }
+
+        async function openPDFInNewTab() {
+            const button = event.target.closest('button');
+            const btnText = document.getElementById('newTabBtnText');
+            
+            try {
+                button.disabled = true;
+                btnText.innerHTML = '<span class="loading"></span> Generating...';
+                
+                const dataText = document.getElementById('dataEditor').value;
+                const data = JSON.parse(dataText);
+                
+                const response = await fetch('/api/generate-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to generate PDF');
+                }
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                
+                // Open in new tab
+                window.open(url, '_blank');
+                
+                showStatus('PDF opened in new tab', 'success');
+                
+            } catch (error) {
+                showStatus('Error opening PDF: ' + error.message, 'error');
+            } finally {
+                button.disabled = false;
+                btnText.innerHTML = '🔗 Open PDF in New Tab';
+            }
+        }
+
+        function previewTemplate() {
+            window.open('/template', '_blank');
+        }
+
+        function switchTab(tabName) {
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Activate selected tab
+            const clickedTab = Array.from(document.querySelectorAll('.tab')).find(
+                tab => tab.textContent.toLowerCase().includes(tabName)
+            );
+            if (clickedTab) {
+                clickedTab.classList.add('active');
+            }
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+            status.style.display = 'block';
+            
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
