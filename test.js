@@ -1,15 +1,16 @@
 const { generatePDF } = require('./pdfGenerator');
 const path = require('path');
 const fs = require('fs');
-const sampleData = require('./sampleData.json');
+const { poData } = require('./sampleData.js');
 
 async function test() {
     try {
         console.log('Testing PDF generation...');
-        const templatePath = path.join(__dirname, 'template 1.html');
-        console.log('Template exists:', fs.existsSync(templatePath));
+        console.log('PO Number:', poData.header.poNumber);
+        console.log('Supplier:', poData.supplier.name);
+        console.log('Items count:', poData.items.length);
         
-        const pdfBuffer = await generatePDF(templatePath, sampleData);
+        const pdfBuffer = await generatePDF(poData);
         console.log('✅ PDF generated successfully!');
         console.log('PDF size:', pdfBuffer.length, 'bytes');
         

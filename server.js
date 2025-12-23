@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { generatePDF } = require('./pdfGenerator');
-const sampleData = require('./sampleData.json');
+const { poData } = require('./sampleData.js');
+const { generatePurchaseOrderHTML } = require('./htmlTemplate.js');
 
 const app = express();
 const PORT = 3000;
@@ -14,24 +15,23 @@ app.use(express.static('public'));
 
 // Serve the template HTML for preview
 app.get('/template', (req, res) => {
-    res.sendFile(path.join(__dirname, 'template 1.html'));
+    const html = generatePurchaseOrderHTML(poData);
+    res.send(html);
 });
 
 // Get sample data
 app.get('/api/sample-data', (req, res) => {
-    res.json(sampleData);
+    res.json(poData);
 });
 
 // Generate PDF with sample data
 app.post('/api/generate-pdf', async (req, res) => {
     try {
         console.log('Generating PDF...');
-        const data = req.body.data || sampleData;
-        console.log('Using data:', Object.keys(data).length, 'keys');
-        const templatePath = path.join(__dirname, 'template 1.html');
-        console.log('Template path:', templatePath);
+        const data = req.body.data || poData;
+        console.log('Using data with PO Number:', data.header?.poNumber);
         
-        const pdfBuffer = await generatePDF(templatePath, data);
+        const pdfBuffer = await generatePDF(data);
         console.log('PDF generated successfully, size:', pdfBuffer.length, 'bytes');
         
         res.setHeader('Content-Type', 'application/pdf');
@@ -50,10 +50,9 @@ app.post('/api/generate-pdf', async (req, res) => {
 // Generate PDF and download
 app.post('/api/download-pdf', async (req, res) => {
     try {
-        const data = req.body.data || sampleData;
-        const templatePath = path.join(__dirname, 'template 1.html');
+        const data = req.body.data || poData;
         
-        const pdfBuffer = await generatePDF(templatePath, data);
+        const pdfBuffer = await generatePDF(data);
         
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename=purchase-order.pdf');
@@ -70,7 +69,9 @@ app.post('/api/update-data', (req, res) => {
     try {
         const fs = require('fs');
         const newData = req.body;
-        fs.writeFileSync('./sampleData.json', JSON.stringify(newData, null, 2));
+        // Export as module format
+        const dataString = `export const poData = ${JSON.stringify(newData, null, 2)};\n`;
+        fs.writeFileSync('./sampleData.js', dataString);
         res.json({ success: true, message: 'Sample data updated' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to update data', message: error.message });

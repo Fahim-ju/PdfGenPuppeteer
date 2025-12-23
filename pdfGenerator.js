@@ -1,21 +1,27 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs').promises;
+const path = require('path');
 
 /**
  * Generate PDF from HTML template with data
- * @param {string} templatePath - Path to HTML template file
- * @param {object} data - Data object with placeholder values
+ * @param {object} data - Data object from sampleData.js structure
+ * @param {Function} templateFunction - Optional template function (generatePurchaseOrderHTML)
  * @returns {Promise<Buffer>} - PDF buffer
  */
-async function generatePDF(templatePath, data) {
+async function generatePDF(data, templateFunction = null) {
     let browser;
     
     try {
-        // Read the HTML template
-        let htmlContent = await fs.readFile(templatePath, 'utf-8');
+        let htmlContent;
         
-        // Replace all placeholders with actual data
-        htmlContent = replacePlaceholders(htmlContent, data);
+        // If template function is provided, use it; otherwise use the default approach
+        if (templateFunction) {
+            htmlContent = templateFunction(data);
+        } else {
+            // Fallback: try to import htmlTemplate.js
+            const { generatePurchaseOrderHTML } = require('./htmlTemplate.js');
+            htmlContent = generatePurchaseOrderHTML(data);
+        }
         
         // Launch Puppeteer
         browser = await puppeteer.launch({
@@ -24,6 +30,16 @@ async function generatePDF(templatePath, data) {
         });
         
         const page = await browser.newPage();
+        
+        // Set base URL for loading CSS files
+        const cssPath = path.join(__dirname, 'template-styles.css');
+        const cssContent = await fs.readFile(cssPath, 'utf-8');
+        
+        // Inject CSS directly into HTML
+        htmlContent = htmlContent.replace(
+            '<link rel="stylesheet" href="template-styles.css">',
+            `<style>${cssContent}</style>`
+        );
         
         // Set the HTML content
         await page.setContent(htmlContent, {
@@ -34,29 +50,9 @@ async function generatePDF(templatePath, data) {
         const pdfBuffer = await page.pdf({
             format: 'A4',
             printBackground: true,
-            displayHeaderFooter: true,
-            headerTemplate: `
-                <div style="width: 100%; font-size: 7pt; padding: 5px 20px; margin: 0;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border: 2.5px solid #000; padding: 8px; background: white;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <div style="width: 120px; height: 60px; background: #000; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24pt;">PMC</div>
-                            <div style="font-size: 7pt; line-height: 1.2;">
-                                PRINCIPAL<br>MANUFACTURING<br>CORPORATION<br>2800 SOUTH 19th AVENUE<br>BROADVIEW, IL 60155
-                            </div>
-                            <div style="font-size: 7pt; line-height: 1.2;">
-                                Principal Manufacturing Corporation<br>2800 South 19th Avenue<br>Broadview, IL 60155<br>Tel: 708-865-7500<br>Fax: 708-865-7632
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <h1 style="font-size: 16pt; font-weight: bold; margin-bottom: 5px;">PURCHASE ORDER</h1>
-                            <div style="font-size: 18pt; font-weight: bold;">{{PO_NUMBER}}</div>
-                        </div>
-                    </div>
-                </div>
-            `,
-            footerTemplate: '<div>Created by PMC</div>',
+            displayHeaderFooter: false,
             margin: {
-                top: '140px',
+                top: '0.25in',
                 right: '0.35in',
                 bottom: '0.25in',
                 left: '0.35in'
@@ -75,29 +71,6 @@ async function generatePDF(templatePath, data) {
     }
 }
 
-/**
- * Replace all {{PLACEHOLDER}} values in HTML with actual data
- * @param {string} html - HTML content with placeholders
- * @param {object} data - Data object
- * @returns {string} - HTML with replaced values
- */
-function replacePlaceholders(html, data) {
-    let result = html;
-    
-    // Replace each placeholder
-    for (const [key, value] of Object.entries(data)) {
-        const placeholder = `{{${key}}}`;
-        const regex = new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-        result = result.replace(regex, value || '');
-    }
-    
-    // Replace any remaining unreplaced placeholders with empty string
-    result = result.replace(/\{\{[A-Z_0-9]+\}\}/g, '');
-    
-    return result;
-}
-
 module.exports = {
-    generatePDF,
-    replacePlaceholders
+    generatePDF
 };
