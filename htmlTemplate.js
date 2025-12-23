@@ -46,31 +46,7 @@ export function generatePurchaseOrderHTML(data) {
             <span class="page-title">PURCHASE ORDER</span>
         </div>
         
-        <div class="header">
-            <div class="header-left">
-                <div class="logo">PMC</div>
-                <div class="company-info">
-                    PRINCIPAL<br>
-                    MANUFACTURING<br>
-                    CORPORATION<br>
-                    2800 SOUTH 19th AVENUE<br>
-                    BROADVIEW, IL 60155
-                </div>
-                <div class="company-info">
-                    ${data.header?.company?.name || 'Principal Manufacturing Corporation'}<br>
-                    ${data.header?.company?.address || '2800 South 19th Avenue'}<br>
-                    ${data.header?.company?.city || 'Broadview, IL 60155'}<br>
-                    ${data.header?.company?.phone || 'Tel: 708-865-7500'}<br>
-                    ${data.header?.company?.fax || 'Fax: 708-865-7632'}
-                </div>
-            </div>
-            <div class="header-right">
-                <h1>PURCHASE ORDER</h1>
-                <div class="po-number">${data.header?.poNumber || ''}</div>
-            </div>
-        </div>
-
-        <div class="main-section">
+        <div class="main-section" style="border-top: 2.5px solid #000;">
             <div class="info-grid">
                 <div class="info-section">
                     <div class="info-row">
