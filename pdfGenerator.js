@@ -1,6 +1,6 @@
-const puppeteer = require('puppeteer');
-const fs = require('fs').promises;
-const path = require('path');
+const puppeteer = require("puppeteer");
+const fs = require("fs").promises;
+const path = require("path");
 
 /**
  * Generate PDF from HTML template with data
@@ -9,60 +9,63 @@ const path = require('path');
  * @returns {Promise<Buffer>} - PDF buffer
  */
 async function generatePDF(data, templateFunction = null) {
-    let browser;
-    
-    try {
-        let htmlContent;
-        
-        // If template function is provided, use it; otherwise use the default approach
-        if (templateFunction) {
-            htmlContent = templateFunction(data);
-        } else {
-            // Fallback: try to import htmlTemplate.js
-            const { generatePurchaseOrderHTML } = require('./htmlTemplate.js');
-            htmlContent = generatePurchaseOrderHTML(data);
-        }
-        
-        // Launch Puppeteer
-        browser = await puppeteer.launch({
-            headless: 'new',
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
-        
-        const page = await browser.newPage();
-        
-        // Set base URL for loading CSS files
-        const cssPath = path.join(__dirname, 'template-styles.css');
-        const cssContent = await fs.readFile(cssPath, 'utf-8');
-        
-        // Inject CSS directly into HTML
-        htmlContent = htmlContent.replace(
-            '<link rel="stylesheet" href="template-styles.css">',
-            `<style>
+  let browser;
+
+  try {
+    let htmlContent;
+
+    // If template function is provided, use it; otherwise use the default approach
+    if (templateFunction) {
+      htmlContent = templateFunction(data);
+    } else {
+      // Fallback: try to import htmlTemplate.js
+      const { generatePurchaseOrderHTML } = require("./htmlTemplate.js");
+      htmlContent = generatePurchaseOrderHTML(data);
+    }
+
+    // Launch Puppeteer
+    browser = await puppeteer.launch({
+      headless: "new",
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
+
+    const page = await browser.newPage();
+
+    // Set base URL for loading CSS files
+    const cssPath = path.join(__dirname, "template-styles.css");
+    const cssContent = await fs.readFile(cssPath, "utf-8");
+
+    // Inject CSS directly into HTML
+    htmlContent = htmlContent.replace(
+      '<link rel="stylesheet" href="template-styles.css">',
+      `<style>
 ${cssContent}
 
 /* Ensure content doesn't appear above header on new pages */
-@media print {
-    @page {
-        margin-top: 140px;
-    }
-    
-    body {
-        margin: 0;
-        padding: 0;
-    }
-}
+
 </style>`
-        );
-        
-        // Set the HTML content
-        await page.setContent(htmlContent, {
-            waitUntil: 'networkidle0'
-        });
-        
-        // Create header template for every page
-        const headerTemplate = `
+    );
+
+    // Set the HTML content
+    await page.setContent(htmlContent, {
+      waitUntil: "networkidle0",
+    });
+
+    const currentDateTime = new Date().toLocaleString("en-US", {
+      month: "2-digit",
+      day: "2-digit",
+      year: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+    // Create header template for every page
+    const headerTemplate = `
             <div style="width: 100%; padding: 0; margin: 0; font-size: 9pt; -webkit-print-color-adjust: exact; position: relative;">
+            <div style="font-size: 8pt; width: 70%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; padding-left: 16px; font-weight: normal; position: relative;">
+                <span>${currentDateTime}</span>
+                <span class="page-title">PURCHASE ORDER</span>
+            </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; border: 2.5px solid #000; padding: 8px; background: white; margin: 0 0.35in;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <div style="width: 120px; height: 60px; background: #000; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24pt; border: 2px solid #000;">PMC</div>
@@ -74,48 +77,50 @@ ${cssContent}
                             BROADVIEW, IL 60155
                         </div>
                         <div style="font-size: 7pt; line-height: 1.2;">
-                            ${data.header?.company?.name || 'Principal Manufacturing Corporation'}<br>
-                            ${data.header?.company?.address || '2800 South 19th Avenue'}<br>
-                            ${data.header?.company?.city || 'Broadview, IL 60155'}<br>
-                            ${data.header?.company?.phone || 'Tel: 708-865-7500'}<br>
-                            ${data.header?.company?.fax || 'Fax: 708-865-7632'}
+                            ${data.header?.company?.name || "Principal Manufacturing Corporation"}<br>
+                            ${data.header?.company?.address || "2800 South 19th Avenue"}<br>
+                            ${data.header?.company?.city || "Broadview, IL 60155"}<br>
+                            ${data.header?.company?.phone || "Tel: 708-865-7500"}<br>
+                            ${data.header?.company?.fax || "Fax: 708-865-7632"}
                         </div>
                     </div>
                     <div style="text-align: right;">
                         <h1 style="font-size: 16pt; font-weight: bold; margin: 0 0 5px 0;">PURCHASE ORDER</h1>
-                        <div style="font-size: 18pt; font-weight: bold;">${data.header?.poNumber || ''}</div>
+                        <div style="font-size: 18pt; font-weight: bold;">${data.header?.poNumber || ""}</div>
                     </div>
                 </div>
             </div>
         `;
-        
-        // Generate PDF
-        const pdfBuffer = await page.pdf({
-            format: 'A4',
-            printBackground: true,
-            displayHeaderFooter: true,
-            headerTemplate: headerTemplate,
-            footerTemplate: '<div></div>', // Empty footer
-            margin: {
-                top: '130px', // Space for header (header height ~100px + some spacing)
-                right: '0.35in',
-                bottom: '0.25in',
-                left: '0.35in'
-            }
-        });
-        
-        return pdfBuffer;
-        
-    } catch (error) {
-        console.error('Error in generatePDF:', error);
-        throw error;
-    } finally {
-        if (browser) {
-            await browser.close();
-        }
+    const footerTemplate = `
+    <div style="font-size: 10px; text-align: right; width: 100%; margin-right: 10px; -webkit-print-color-adjust: exact;">
+      <span class="pageNumber"></span>/<span class="totalPages"></span>
+    </div>
+  `;
+    // Generate PDF
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      displayHeaderFooter: true,
+      headerTemplate: headerTemplate,
+      footerTemplate: footerTemplate,
+      margin: {
+        top: "1in", // Space for header (header height ~100px + some spacing)
+        bottom: "0.75in", // Space for footer
+      },
+      preferCSSPageSize: true,
+    });
+
+    return pdfBuffer;
+  } catch (error) {
+    console.error("Error in generatePDF:", error);
+    throw error;
+  } finally {
+    if (browser) {
+      await browser.close();
     }
+  }
 }
 
 module.exports = {
-    generatePDF
+  generatePDF,
 };

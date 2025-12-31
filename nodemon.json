@@ -1,0 +1,16 @@
+{
+  "watch": [
+    "*.js",
+    "*.css",
+    "public/**/*"
+  ],
+  "ext": "js,json,css,html",
+  "ignore": [
+    "node_modules/**",
+    "*.pdf",
+    "test-output.pdf",
+    "api-test-output.pdf"
+  ],
+  "delay": 500,
+  "verbose": true
+}

@@ -7,7 +7,7 @@ export function generatePurchaseOrderHTML(data) {
   const currentDateTime = new Date().toLocaleString('en-US', {
     month: '2-digit',
     day: '2-digit',
-    year: 'numeric',
+    year: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
     hour12: true
@@ -41,12 +41,7 @@ export function generatePurchaseOrderHTML(data) {
 </head>
 <body>
     <div class="container">
-        <div class="date-time">
-            <span>${currentDateTime}</span>
-            <span class="page-title">PURCHASE ORDER</span>
-        </div>
-        
-        <div class="main-section" style="border-top: 2.5px solid #000;">
+        <div class="main-section" style="">
             <div class="info-grid">
                 <div class="info-section">
                     <div class="info-row">
