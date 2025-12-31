@@ -227,6 +227,33 @@ export const poData = {
     subTotalQty: "40,751",
     subTotalPrice: "88,957.29",
   },
-  notes:
-    "AISI Alloy 304 CRS surface Finish. All materials must meet ISO 9001 standards. Delivery must be coordinated with receiving department 24 hours in advance. Materials require certified mill test reports (MTR) and material safety data sheets (MSDS). Inspect all shipments for damage before acceptance.",
+  notes: {
+    defaultNote: `AISI Alloy 304 CRS surface Finish Per SZM-20106 / ASTM A240 ANNEALED RB 92 MAX Change to LOW TACK WHITE 3MIL
+PROTECTIVE FILM effective 10-14-22 Material free of pitting and scratches 20" ID 68" MAX O.D. MATERIAL CERTS WITH ROCKWELL
+REQUIRED WITH ALL SHIPMENTS. CHEMICAL AND MECHANICAL CERTS REQUIRED WITH SHIPMENT.`,
+    spotNC: `<p>Instructions to Supplier:</p> <p>This Purchase Order is subject to the PMC Terms and Conditions of Purchase.</p> <p>Unless this is a fixed-quantity contract under Section 2.1 of Principal Manufacturing Corporation Terms and
+Conditions of Purchase (“T&C”) or expressly indicated otherwise, this Purchase Order is a requirements
+contract under which Buyer is committing to purchase and Seller is committing to deliver 100% of Buyer’s
+requirements. Specific quantities listed above may communicate release levels under a requirements contract
+under Section 2.2 or 2.3 of the T&C. This Purchase Order incorporates and is governed exclusively by the T&C
+effective as of the date of this Purchase Order, and for any renewals of this Purchase Order on the most recent
+renewal date, which can be accessed at <a href="https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of">https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of</a>
+Purchase-September-2025.pdf  or from Buyer’s purchasing representatives. It is expressly limited to its stated
+terms, and Buyer rejects any additional or different terms proposed by Seller, which are not binding on Buyer
+unless expressly agreed to by Buyer in writing. Subject to Buyer’s termination rights, this contract is binding for
+the length of the applicable OEM vehicle program production life (including extensions and model refreshes as
+determined by the OEM), and the service parts obligations that follow.</p> <p>For a copy of the PMC Supplier Manual.
+</p> <a href="https://www.principalmfg.com/wp-content/uploads/Supplier-Manual-5.2-edition-PDF.pdf">https://www.principalmfg.com/wp-content/uploads/Supplier-Manual-5.2-edition-PDF.pdf</a>`,
+    materialCertification: `<p>MATERIAL CERTIFICATION REQUIRED EACH SHIPMENT
+</p> <p>Material certification shall specify the material conforms to blueprint raw 
+material and declare the grade.</p>`,
+    certificationRequired: `<p>A CERTIFICATION IS REQUIRED WITH EVERY SHIPMENT.</p>`,
+    pmcReceivingHours: `<p>PMC will be closed for Thanksgiving November 27 and 28th 
+RECEIVING HOURS WEEKDAYS 7 AM TO 3:30 PM</p>`,
+    isoCompliance: `<p>PMC is ISO 14001 registered and all suppliers are required to comply with the 
+handling of any substance of concern in a safe manner in accordance with 
+applicable laws and regulations.</p>`,
+    shippingInstructions: `<p>When shipping product through a common carrier to PMC, please use the following criteria:  Description: 
+Unfinished Metal Stampings, Class:  50, NMFC:  104500.</p>`,
+  },
 };
