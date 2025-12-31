@@ -180,34 +180,45 @@ ${itemsRows}
                     </tfoot>
             </table>
             
-            <div class="notes-header">Notes</div>
-            <div class="notes-content">
+            <table class="notes-table">
+                <thead>
+                    <tr>
+                        <th class="notes-header-cell">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="notes-content">
+                            <p><strong>${data.notes || ""}</strong></p>
+                            
+                            <h3>Instructions to Supplier:</h3>
+                            
+                            <p><strong>This Purchase Order is subject to the PMC Terms and Conditions of Purchase.</strong></p>
+                            
+                            <p>Unless this is a fixed-quantity contract under Section 2.1 of Principal Manufacturing Corporation Terms and Conditions of Purchase ("T&C") or expressly indicated otherwise, this Purchase Order is a requirements contract under which Buyer is committing to purchase and Seller is committing to deliver 100% of Buyer's requirements. Specific quantities listed above may communicate release levels under a requirements contract under Section 2.2 or 2.3 of the T&C. This Purchase Order incorporates and is governed exclusively by the T&C effective as of the date of this Purchase Order, and for any renewals of this Purchase Order on the most recent renewal date, which can be accessed at <a href="https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of-Purchase-September-2025.pdf" class="blue-link">https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of-Purchase-September-2025.pdf</a> or from Buyer's purchasing representatives. It is expressly limited to its stated terms, and Buyer rejects any additional or different terms proposed by Seller, which are not binding on Buyer unless expressly agreed to by Buyer in writing. Subject to Buyer's termination rights, this contract is binding for the length of the applicable OEM vehicle program production life (including extensions and model refreshes as determined by the OEM), and the service parts obligations that follow.</p>
+                            <p>Unless this is a fixed-quantity contract under Section 2.1 of Principal Manufacturing Corporation Terms and Conditions of Purchase ("T&C") or expressly indicated otherwise, this Purchase Order is a requirements contract under which Buyer is committing to purchase and Seller is committing to deliver 100% of Buyer's requirements. Specific quantities listed above may communicate release levels under a requirements contract under Section 2.2 or 2.3 of the T&C. This Purchase Order incorporates and is governed exclusively by the T&C effective as of the date of this Purchase Order, and for any renewals of this Purchase Order on the most recent renewal date, which can be accessed at <a href="https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of-Purchase-September-2025.pdf" class="blue-link">https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of-Purchase-September-2025.pdf</a> or from Buyer's purchasing representatives. It is expressly limited to its stated terms, and Buyer rejects any additional or different terms proposed by Seller, which are not binding on Buyer unless expressly agreed to by Buyer in writing. Subject to Buyer's termination rights, this contract is binding for the length of the applicable OEM vehicle program production life (including extensions and model refreshes as determined by the OEM), and the service parts obligations that follow.</p>
+                            <p>Unless this is a fixed-quantity contract under Section 2.1 of Principal Manufacturing Corporation Terms and Conditions of Purchase ("T&C") or expressly indicated otherwise, this Purchase Order is a requirements contract under which Buyer is committing to purchase and Seller is committing to deliver 100% of Buyer's requirements. Specific quantities listed above may communicate release levels under a requirements contract under Section 2.2 or 2.3 of the T&C. This Purchase Order incorporates and is governed exclusively by the T&C effective as of the date of this Purchase Order, and for any renewals of this Purchase Order on the most recent renewal date, which can be accessed at <a href="https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of-Purchase-September-2025.pdf" class="blue-link">https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of-Purchase-September-2025.pdf</a> or from Buyer's purchasing representatives. It is expressly limited to its stated terms, and Buyer rejects any additional or different terms proposed by Seller, which are not binding on Buyer unless expressly agreed to by Buyer in writing. Subject to Buyer's termination rights, this contract is binding for the length of the applicable OEM vehicle program production life (including extensions and model refreshes as determined by the OEM), and the service parts obligations that follow.</p>
+                            
+                            <p><strong>For a copy of the PMC Supplier Manual.</strong><br>
+                            <a href="https://www.principalmfg.com/wp-content/uploads/Supplier-Manual-5.2-edition-PDF.pdf" class="blue-link">https://www.principalmfg.com/wp-content/uploads/Supplier-Manual-5.2-edition-PDF.pdf</a></p>
+                            
+                            <h3>MATERIAL CERTIFICATION REQUIRED EACH SHIPMENT</h3>
+                            
+                            <p>Material certification shall specify the material conforms to blueprint raw material and declare the grade</p>
+                            
+                            <p style="margin-top: 25px;">PMC will be closed for Thanksgiving November 27 and 28th</p>
+                            
+                            <p style="margin-top: 15px;"><strong>RECEIVING HOURS WEEKDAYS 7 AM TO 3:30 PM</strong></p>
+                            
+                            <p style="margin-top: 15px;">PMC is ISO 14001 registered and <span style="text-decoration: underline;">all suppliers are required to comply to with the handling of any substance of concern in a safe manner in accordance with applicable laws and regulations.</span></p>
+                            
+                            <p style="margin-top: 15px;">When shipping product through a common carrier to PMC, please use the following criteria: Description: Unfinished Metal Stampings, Class: 50, NMFC: 104500.</p>
 
-                <p><strong>${data.notes || ""}</strong></p>
-                
-                <h3>Instructions to Supplier:</h3>
-                
-                <p><strong>This Purchase Order is subject to the PMC Terms and Conditions of Purchase.</strong></p>
-                
-                <p>Unless this is a fixed-quantity contract under Section 2.1 of Principal Manufacturing Corporation Terms and Conditions of Purchase ("T&C") or expressly indicated otherwise, this Purchase Order is a requirements contract under which Buyer is committing to purchase and Seller is committing to deliver 100% of Buyer's requirements. Specific quantities listed above may communicate release levels under a requirements contract under Section 2.2 or 2.3 of the T&C. This Purchase Order incorporates and is governed exclusively by the T&C effective as of the date of this Purchase Order, and for any renewals of this Purchase Order on the most recent renewal date, which can be accessed at <a href="https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of-Purchase-September-2025.pdf" class="blue-link">https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of-Purchase-September-2025.pdf</a> or from Buyer's purchasing representatives. It is expressly limited to its stated terms, and Buyer rejects any additional or different terms proposed by Seller, which are not binding on Buyer unless expressly agreed to by Buyer in writing. Subject to Buyer's termination rights, this contract is binding for the length of the applicable OEM vehicle program production life (including extensions and model refreshes as determined by the OEM), and the service parts obligations that follow.</p>
-                
-                <p><strong>For a copy of the PMC Supplier Manual.</strong><br>
-                <a href="https://www.principalmfg.com/wp-content/uploads/Supplier-Manual-5.2-edition-PDF.pdf" class="blue-link">https://www.principalmfg.com/wp-content/uploads/Supplier-Manual-5.2-edition-PDF.pdf</a></p>
-                
-                <h3>MATERIAL CERTIFICATION REQUIRED EACH SHIPMENT</h3>
-                
-                <p>Material certification shall specify the material conforms to blueprint raw material and declare the grade</p>
-                
-                <p style="margin-top: 25px;">PMC will be closed for Thanksgiving November 27 and 28th</p>
-                
-                <p style="margin-top: 15px;"><strong>RECEIVING HOURS WEEKDAYS 7 AM TO 3:30 PM</strong></p>
-                
-                <p style="margin-top: 15px;">PMC is ISO 14001 registered and <span style="text-decoration: underline;">all suppliers are required to comply to with the handling of any substance of concern in a safe manner in accordance with applicable laws and regulations.</span></p>
-                
-                <p style="margin-top: 15px;">When shipping product through a common carrier to PMC, please use the following criteria: Description: Unfinished Metal Stampings, Class: 50, NMFC: 104500.</p>
-
-                <p style="margin-top: 10px; font-style: italic; font-weight: bold;">A CERTIFICATION IS REQUIRED WITH EVERY SHIPMENT.</p>
-            </div>
+                            <p style="margin-top: 10px; font-style: italic; font-weight: bold;">A CERTIFICATION IS REQUIRED WITH EVERY SHIPMENT.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <div class="footer">

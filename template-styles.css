@@ -227,11 +227,27 @@ body {
   border-top: 2px solid #000;
 }
 
-.notes-section {
-  margin-top: 10px;
-  padding: 10px;
-  border: 2px solid #000;
-  min-height: 200px;
+.notes-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0;
+}
+
+.notes-table thead th.notes-header-cell {
+  text-align: center;
+  padding: 3px;
+  font-weight: bold;
+  font-size: 7.5pt;
+  border-bottom: 1px solid #000;
+  border-left: 0;
+  border-right: 0;
+}
+
+.notes-table tbody td.notes-content {
+  padding: 4px;
+  font-size: 7.5pt;
+  line-height: 1.4;
+  border: 0;
 }
 
 .notes-section h3 {

@@ -82,6 +82,10 @@ ${cssContent}
         page-break-inside: avoid !important;
     }
 
+    .notes-table thead {
+        display: table-header-group !important;
+    }
+
   .notes-header {
     page-break-after: avoid;
   }
