@@ -173,6 +173,9 @@ ${itemsRows}
                             <td class="align-right">${data.totals?.subTotalQty || ""}</td>
                             <td class="align-right">${data.totals?.subTotalPrice || ""}</td>
                         </tr>
+                        <tr>
+                            <td colspan="9" >&nbsp;</td>
+                        </tr>
                         <tr class="grand-total-row">
                             <td colspan="9" class="align-right"><strong>Grand Total:</strong></td>
                             <td class="align-right"><strong>${grandTotal}</strong></td>
