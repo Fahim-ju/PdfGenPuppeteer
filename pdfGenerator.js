@@ -78,7 +78,8 @@ ${cssContent}
     }
 
     .items-table tfoot {
-        display: table-footer-group !important;
+        display: table-row-group !important;
+        page-break-inside: avoid !important;
     }
 
   .notes-header {
@@ -144,10 +145,15 @@ ${cssContent}
             </div>
         `;
     const footerTemplate = `
-    <div style="font-size: 10px; text-align: right; width: 100%; margin-right: 10px; -webkit-print-color-adjust: exact;">
-      <span class="pageNumber"></span>/<span class="totalPages"></span>
+    <div style="font-size: 10px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0px 20px; -webkit-print-color-adjust: exact; box-sizing: border-box;">
+        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; padding-right: 10px;"> 
+            <a href="https://www.plexonline.com/5c1a707e-0ca9-4cbe-b4a5-af0dbf6e6921/modules/systemadministration/login/index.aspx?Message=For%20security%20reasons,%20you%20must%20log%20in%20again%20after%2090%20minutes%20of%20inactivity.&Session_Key={5c1a707e-0ca9-4cbe-b4a5-af0dbf6e6921" style="color: #000; text-decoration: none;">https://www.plexonline.com/5c1a707e-0ca9-4cbe-b4a5-af0dbf6e6921/modules/systemadministration/login/index.aspx?Message=For%20security%20reasons,%20you%20must%20log%20in%20again%20after%2090%20minutes%20of%20inactivity.&Session_Key={5c1a707e-0ca9-4cbe-b4a5-af0dbf6e6921</a>
+        </div>
+        <div style="white-space: nowrap;">
+            <span class="pageNumber"></span>/<span class="totalPages"></span>
+        </div>
     </div>
-  `;
+`;
 // Generate PDF
     const pdfBuffer = await page.pdf({
       format: "A4",

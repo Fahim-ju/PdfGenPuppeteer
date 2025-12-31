@@ -63,7 +63,7 @@ body {
 }
 
 .main-section {
-  border: 2.5px solid #0cbb41;
+  border: 2.5px solid #000;
   border-top: 0;
 }
 
@@ -167,7 +167,6 @@ body {
   line-height: 1.2;
   word-wrap: break-word;
   vertical-align: top;
-  background-color: #9feeb7;
 }
 
 .items-table td:first-child {

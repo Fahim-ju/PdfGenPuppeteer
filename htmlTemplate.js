@@ -98,7 +98,8 @@ export function generatePurchaseOrderHTML(data) {
                     <div class="info-row">
                         <span class="info-label">Ordered By:</span>
                         <span>${data.poInfo?.orderedBy || ""}<br>${data.poInfo?.orderedByPhone || ""}<br>${
-                        data.poInfo?.orderedByEmail || ""}
+    data.poInfo?.orderedByEmail || ""
+  }
                         </span>
                     </div>
                     
@@ -163,17 +164,20 @@ export function generatePurchaseOrderHTML(data) {
                 </thead>
                 <tbody>
 ${itemsRows}
-                    <tr class="totals-row">
-                        <td colspan="7"></td>
-                        <td class="align-right">Sub Total:</td>
-                        <td class="align-right">${data.totals?.subTotalQty || ""}</td>
-                        <td class="align-right">${data.totals?.subTotalPrice || ""}</td>
-                    </tr>
-                    <tr class="grand-total-row">
-                        <td colspan="9" class="align-right"><strong>Grand Total:</strong></td>
-                        <td class="align-right"><strong>${grandTotal}</strong></td>
-                    </tr>
+                    
                 </tbody>
+                <tfoot>
+                    <tr class="totals-row">
+                            <td colspan="7"></td>
+                            <td class="align-right">Sub Total:</td>
+                            <td class="align-right">${data.totals?.subTotalQty || ""}</td>
+                            <td class="align-right">${data.totals?.subTotalPrice || ""}</td>
+                        </tr>
+                        <tr class="grand-total-row">
+                            <td colspan="9" class="align-right"><strong>Grand Total:</strong></td>
+                            <td class="align-right"><strong>${grandTotal}</strong></td>
+                        </tr>
+                    </tfoot>
             </table>
             
             <div class="notes-header">Notes</div>
