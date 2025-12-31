@@ -42,7 +42,49 @@ async function generatePDF(data, templateFunction = null) {
 ${cssContent}
 
 /* Ensure content doesn't appear above header on new pages */
+@media print {
+  .container {
+    margin: 0;
+    padding: 24px 48px;
+    width: 100%;
+  }
 
+  .date-time,
+  .header {
+    page-break-inside: avoid;
+    page-break-after: avoid;
+  }
+
+  .info-grid {
+    page-break-inside: avoid;
+  }
+
+  .items-table thead {
+    display: table-header-group !important;
+    }
+
+    .items-table tbody tr {
+        page-break-inside: auto !important;
+    }
+
+    .items-table tfoot {
+        display: table-footer-group !important;
+    }
+
+  .notes-header {
+    page-break-after: avoid;
+  }
+
+  .notes-content {
+    page-break-inside: auto;
+  }
+
+  .notes-content p,
+  .notes-content h3 {
+    orphans: 2;
+    widows: 2;
+  }
+}
 </style>`
     );
 
@@ -66,7 +108,7 @@ ${cssContent}
                 <span>${currentDateTime}</span>
                 <span class="page-title">PURCHASE ORDER</span>
             </div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; border: 2.5px solid #000; padding: 8px; background: white; margin: 0 0.35in;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; border: 2.5px solid #000; padding: 8px; background: white; margin: 0 48px;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <div style="width: 120px; height: 60px; background: #000; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24pt; border: 2px solid #000;">PMC</div>
                         <div style="font-size: 7pt; line-height: 1.2;">
@@ -104,7 +146,7 @@ ${cssContent}
       headerTemplate: headerTemplate,
       footerTemplate: footerTemplate,
       margin: {
-        top: "1in", // Space for header (header height ~100px + some spacing)
+        top: "2in", // Space for header (header height ~100px + some spacing)
         bottom: "0.75in", // Space for footer
       },
       preferCSSPageSize: true,
