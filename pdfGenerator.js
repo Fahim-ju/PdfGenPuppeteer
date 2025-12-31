@@ -45,7 +45,7 @@ ${cssContent}
 @media print {
   .container {
     margin: 0 0;
-    padding: 0px 48px;
+    padding: 0px 60px;
     width: 100%;
     //border: 5px solid #ebe846ff;
   }
@@ -116,24 +116,19 @@ ${cssContent}
       minute: "2-digit",
       hour12: true,
     });
+    const logoPath = path.join(__dirname, "pmclogo.png");
+    const logoBase64 = await fs.readFile(logoPath, "base64");
     // Create header template for every page
     const headerTemplate = `
-            <div style="width: 100%; font-size: 9pt; -webkit-print-color-adjust: exact; position: relative;">
+            <div style="width: 100%; font-size: 9pt; -webkit-print-color-adjust: exact; position: relative; height: 40px;">
             <div style="font-size: 8pt; width: 70%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; padding-left: 16px; font-weight: normal; position: relative;">
                 <span>${currentDateTime}</span>
                 <span class="page-title">PURCHASE ORDER</span>
             </div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; border: 2.5px solid #000; padding: 10px 25px 15px 25px; margin: 0px 48px">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; border: 2.5px solid #000; padding: 10px 25px 15px 25px; margin: 0px 60px; height: 63px;">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 120px; height: 60px; background: #000; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24pt; border: 2px solid #000;">PMC</div>
-                        <div style="font-size: 7pt; line-height: 1.2;">
-                            PRINCIPAL<br>
-                            MANUFACTURING<br>
-                            CORPORATION<br>
-                            2800 SOUTH 19th AVENUE<br>
-                            BROADVIEW, IL 60155
-                        </div>
-                        <div style="font-size: 7pt; line-height: 1.2;">
+                        <img src="data:image/png;base64,${logoBase64}" style="width: 120px; height: 60px; object-fit: contain;" alt="PMC Logo">
+                        <div style="font-size: 7.5pt; line-height: 1.2;">
                             ${data.header?.company?.name || "Principal Manufacturing Corporation"}<br>
                             ${data.header?.company?.address || "2800 South 19th Avenue"}<br>
                             ${data.header?.company?.city || "Broadview, IL 60155"}<br>
