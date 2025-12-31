@@ -75,7 +75,7 @@ export const poData = {
     {
       item: "1:6",
       part: "C3498",
-      desc: "Aluminum tube  diameter Aluminum diameter Aluminum tube 25mm diameter x 3m length",
+      desc: "Aluminum tube  diameter Aluminum diameter Aluminum tube 25mm diameter x 3m length Aluminum tube  diameter Aluminum diameter Aluminum tube 25mm diameter x 3m length",
       status: "Forecast",
       date: "1/15/26",
       qty: "1,000",
@@ -105,7 +105,7 @@ export const poData = {
     {
       item: "1:9",
       part: "F6721",
-      desc: "Brass rod 20mm diameter x 2m length 20mm diameter x 2m len 20mm diameter x 2m length gth 20mm 20mm diameter x 2m length 20mm diameter x 2m length diameter x 2m length",
+      desc: "Brass rod 20mm diameter x 2m length 20mm diameter diameter x 2m length 20mm diameter x 2m len 20mm diameter x 2m length gth 20mm 20mm diameter x 2m length 20mm diameter x 2m length diameter x 2m length",
       status: "Forecast",
       date: "2/1/26",
       qty: "750",
@@ -115,7 +115,7 @@ export const poData = {
     {
       item: "1:10",
       part: "G7832",
-      desc: "Carbon fiber sheet 3mm x 500mm x 1000mm 20mm diameter x 2m length",
+      desc: "Carbon fiber sheet 3mm x 500mm x 1000mm fiber sheet 3mm x 500mm x 1000mm 20mm diameter x 2m length",
       status: "Firm",
       date: "2/5/26",
       qty: "100",

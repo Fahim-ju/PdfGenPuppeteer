@@ -63,7 +63,6 @@ ${cssContent}
   .main-section {
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
-    margin: 0;
   }
 
   .items-table thead {
@@ -71,6 +70,10 @@ ${cssContent}
     }
 
     .items-table tbody tr {
+        page-break-inside: auto !important;
+    }
+
+    .items-table tbody td {
         page-break-inside: auto !important;
     }
 
@@ -110,12 +113,12 @@ ${cssContent}
     });
     // Create header template for every page
     const headerTemplate = `
-            <div style="width: 100%; padding: 0; margin: 0; font-size: 9pt; -webkit-print-color-adjust: exact; position: relative;">
+            <div style="width: 100%; font-size: 9pt; -webkit-print-color-adjust: exact; position: relative;">
             <div style="font-size: 8pt; width: 70%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; padding-left: 16px; font-weight: normal; position: relative;">
                 <span>${currentDateTime}</span>
                 <span class="page-title">PURCHASE ORDER</span>
             </div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; border: 2.5px solid #000; padding: 8px; background: white; margin: 0 48px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; border: 2.5px solid #000; padding: 10px 25px 15px 25px; margin: 0px 48px">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <div style="width: 120px; height: 60px; background: #000; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24pt; border: 2px solid #000;">PMC</div>
                         <div style="font-size: 7pt; line-height: 1.2;">
@@ -145,7 +148,7 @@ ${cssContent}
       <span class="pageNumber"></span>/<span class="totalPages"></span>
     </div>
   `;
-    // Generate PDF
+// Generate PDF
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
@@ -153,8 +156,8 @@ ${cssContent}
       headerTemplate: headerTemplate,
       footerTemplate: footerTemplate,
       margin: {
-        top: "120px", // Space for header (header height ~100px + some spacing)
-        bottom: "0.75in", // Space for footer
+        top: "130px", // Space for header (header height ~100px + some spacing)
+        bottom: "50px", // Space for footer
       },
       preferCSSPageSize: true,
     });
