@@ -44,9 +44,10 @@ ${cssContent}
 /* Ensure content doesn't appear above header on new pages */
 @media print {
   .container {
-    margin: 0;
-    padding: 24px 48px;
+    margin: 0 0;
+    padding: 0px 48px;
     width: 100%;
+    //border: 5px solid #ebe846ff;
   }
 
   .date-time,
@@ -62,6 +63,7 @@ ${cssContent}
   .main-section {
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
+    margin: 0;
   }
 
   .items-table thead {
@@ -151,7 +153,7 @@ ${cssContent}
       headerTemplate: headerTemplate,
       footerTemplate: footerTemplate,
       margin: {
-        top: "2in", // Space for header (header height ~100px + some spacing)
+        top: "120px", // Space for header (header height ~100px + some spacing)
         bottom: "0.75in", // Space for footer
       },
       preferCSSPageSize: true,

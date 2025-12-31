@@ -98,8 +98,8 @@ export function generatePurchaseOrderHTML(data) {
                     <div class="info-row">
                         <span class="info-label">Ordered By:</span>
                         <span>${data.poInfo?.orderedBy || ""}<br>${data.poInfo?.orderedByPhone || ""}<br>${
-    data.poInfo?.orderedByEmail || ""
-  }</span>
+                        data.poInfo?.orderedByEmail || ""}
+                        </span>
                     </div>
                     
                     <div style="margin-top: 10px;">
