@@ -13,7 +13,6 @@ body {
 .container {
   width: 210mm;
   margin: 0 auto;
-  background: white;
   padding: 0.25in 0.5in;
 }
 
@@ -71,7 +70,7 @@ body {
 }
 
 .main-section {
-  border: 2.5px solid #000;
+  border: 2.5px solid #0cbb41;
   border-top: 0;
   margin-bottom: 10px;
 }
@@ -83,7 +82,7 @@ body {
 }
 
 .info-section {
-  border-right: 2px solid #000;
+  border-right: 2px solid #2515b3;
   padding: 6px 8px;
 }
 
@@ -171,10 +170,9 @@ body {
 }
 
 .items-table td {
-  border: 1.5px solid #000;
+  border: 1.5px solid #d10a0a;
   padding: 2px 3px;
   font-size: 7.5pt;
-  overflow: hidden;
   word-wrap: break-word;
 }
 

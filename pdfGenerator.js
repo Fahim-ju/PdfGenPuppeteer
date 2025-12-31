@@ -59,6 +59,11 @@ ${cssContent}
     page-break-inside: avoid;
   }
 
+  .main-section {
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
   .items-table thead {
     display: table-header-group !important;
     }
