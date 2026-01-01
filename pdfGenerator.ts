@@ -1,38 +1,44 @@
-const puppeteer = require("puppeteer");
-const fs = require("fs").promises;
-const path = require("path");
+import puppeteer, { Browser, Page } from "puppeteer";
+import { promises as fs } from "fs";
+import * as path from "path";
+import { PoData } from './sampleData';
 
 /**
  * Generate PDF from HTML template with data
- * @param {object} data - Data object from sampleData.js structure
- * @param {Function} templateFunction - Optional template function (generatePurchaseOrderHTML)
- * @returns {Promise<Buffer>} - PDF buffer
+ * @param data - Data object from sampleData.ts structure
+ * @param templateFunction - Optional template function (generatePurchaseOrderHTML)
+ * @returns PDF buffer
  */
-async function generatePDF(data, templateFunction = null) {
-  let browser;
+export async function generatePDF(
+  data: PoData,
+  templateFunction?: ((data: PoData) => string) | null
+): Promise<Buffer> {
+  let browser: Browser | undefined;
 
   try {
-    let htmlContent;
+    let htmlContent: string;
 
     // If template function is provided, use it; otherwise use the default approach
     if (templateFunction) {
       htmlContent = templateFunction(data);
     } else {
-      // Fallback: try to import htmlTemplate.js
-      const { generatePurchaseOrderHTML } = require("./htmlTemplate.js");
+      // Fallback: try to import htmlTemplate.ts
+      const { generatePurchaseOrderHTML } = await import("./htmlTemplate");
       htmlContent = generatePurchaseOrderHTML(data);
     }
 
     // Launch Puppeteer
     browser = await puppeteer.launch({
-      headless: "new",
+      headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
-    const page = await browser.newPage();
+    const page: Page = await browser.newPage();
 
     // Set base URL for loading CSS files
-    const cssPath = path.join(__dirname, "template-styles.css");
+    // __dirname points to dist in compiled code, so go up one level
+    const rootDir = path.resolve(__dirname, '..');
+    const cssPath = path.join(rootDir, "template-styles.css");
     const cssContent = await fs.readFile(cssPath, "utf-8");
 
     // Inject CSS directly into HTML
@@ -116,7 +122,7 @@ ${cssContent}
       minute: "2-digit",
       hour12: true,
     });
-    const logoPath = path.join(__dirname, "pmclogo.png");
+    const logoPath = path.join(rootDir, "pmclogo.png");
     const logoBase64 = await fs.readFile(logoPath, "base64");
     // Create header template for every page
     const headerTemplate = `
@@ -153,7 +159,7 @@ ${cssContent}
         </div>
     </div>
 `;
-// Generate PDF
+    // Generate PDF
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
@@ -167,7 +173,7 @@ ${cssContent}
       preferCSSPageSize: true,
     });
 
-    return pdfBuffer;
+    return Buffer.from(pdfBuffer);
   } catch (error) {
     console.error("Error in generatePDF:", error);
     throw error;
@@ -177,7 +183,3 @@ ${cssContent}
     }
   }
 }
-
-module.exports = {
-  generatePDF,
-};

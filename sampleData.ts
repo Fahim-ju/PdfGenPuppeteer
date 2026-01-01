@@ -1,4 +1,96 @@
-export const poData = {
+export interface Company {
+  name: string;
+  address: string;
+  city: string;
+  phone: string;
+  fax: string;
+}
+
+export interface Header {
+  logo: string;
+  company: Company;
+  poNumber: string;
+}
+
+export interface Attention {
+  name: string;
+  phone: string;
+}
+
+export interface Supplier {
+  name: string;
+  tradeName: string;
+  address: string;
+  city: string;
+  attention: Attention;
+}
+
+export interface ShipTo {
+  name: string;
+  address: string;
+  note: string;
+  city: string;
+}
+
+export interface PoInfo {
+  poNo: string;
+  poDate: string;
+  dueDate: string;
+  poRevision: string;
+  revisionDate: string;
+  orderedBy: string;
+  via: string;
+  pymtTerms: string;
+  fob: string;
+  freightTerms: string;
+  note: string;
+  routeTo: string;
+  routeToEmployee?: string;
+  buyer?: string;
+  orderedByPhone?: string;
+  orderedByEmail?: string;
+}
+
+export interface Item {
+  item: string;
+  part: string;
+  desc: string;
+  status: string;
+  date: string;
+  qty: string;
+  unit: string;
+  ext: string;
+  jobNo?: string;
+  account?: string;
+}
+
+export interface Totals {
+  subTotalQty: string;
+  subTotalPrice: string;
+  grandTotal?: string;
+}
+
+export interface Notes {
+  defaultNote: string;
+  spotNC: string;
+  materialCertification: string;
+  certificationRequired: string;
+  pmcReceivingHours: string;
+  isoCompliance: string;
+  shippingInstructions: string;
+}
+
+export interface PoData {
+  header: Header;
+  supplier: Supplier;
+  shipTo: ShipTo;
+  poInfo: PoInfo;
+  items: Item[];
+  totals: Totals;
+  notes: Notes;
+}
+
+export const poData: PoData = {
   header: {
     logo: "Logo",
     company: {
@@ -232,15 +324,15 @@ export const poData = {
 PROTECTIVE FILM effective 10-14-22 Material free of pitting and scratches 20" ID 68" MAX O.D. MATERIAL CERTS WITH ROCKWELL
 REQUIRED WITH ALL SHIPMENTS. CHEMICAL AND MECHANICAL CERTS REQUIRED WITH SHIPMENT.`,
     spotNC: `<p>Instructions to Supplier:</p> <p>This Purchase Order is subject to the PMC Terms and Conditions of Purchase.</p> <p>Unless this is a fixed-quantity contract under Section 2.1 of Principal Manufacturing Corporation Terms and
-Conditions of Purchase (“T&C”) or expressly indicated otherwise, this Purchase Order is a requirements
-contract under which Buyer is committing to purchase and Seller is committing to deliver 100% of Buyer’s
+Conditions of Purchase ("T&C") or expressly indicated otherwise, this Purchase Order is a requirements
+contract under which Buyer is committing to purchase and Seller is committing to deliver 100% of Buyer's
 requirements. Specific quantities listed above may communicate release levels under a requirements contract
 under Section 2.2 or 2.3 of the T&C. This Purchase Order incorporates and is governed exclusively by the T&C
 effective as of the date of this Purchase Order, and for any renewals of this Purchase Order on the most recent
 renewal date, which can be accessed at <a href="https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of">https://www.principalmfg.com/wp-content/uploads/Terms-Conditions-of</a>
-Purchase-September-2025.pdf  or from Buyer’s purchasing representatives. It is expressly limited to its stated
+Purchase-September-2025.pdf  or from Buyer's purchasing representatives. It is expressly limited to its stated
 terms, and Buyer rejects any additional or different terms proposed by Seller, which are not binding on Buyer
-unless expressly agreed to by Buyer in writing. Subject to Buyer’s termination rights, this contract is binding for
+unless expressly agreed to by Buyer in writing. Subject to Buyer's termination rights, this contract is binding for
 the length of the applicable OEM vehicle program production life (including extensions and model refreshes as
 determined by the OEM), and the service parts obligations that follow.</p> <p>For a copy of the PMC Supplier Manual.
 </p> <a href="https://www.principalmfg.com/wp-content/uploads/Supplier-Manual-5.2-edition-PDF.pdf">https://www.principalmfg.com/wp-content/uploads/Supplier-Manual-5.2-edition-PDF.pdf</a>`,

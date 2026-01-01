@@ -1,9 +1,11 @@
+import { PoData } from './sampleData';
+
 /**
  * Generates HTML for Purchase Order based on provided data
- * @param {Object} data - Purchase order data object
- * @returns {string} Complete HTML document as string
+ * @param data - Purchase order data object
+ * @returns Complete HTML document as string
  */
-export function generatePurchaseOrderHTML(data) {
+export function generatePurchaseOrderHTML(data: PoData): string {
   const currentDateTime = new Date().toLocaleString("en-US", {
     month: "2-digit",
     day: "2-digit",

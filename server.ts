@@ -1,9 +1,10 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const { generatePDF } = require('./pdfGenerator');
-const { poData } = require('./sampleData.js');
-const { generatePurchaseOrderHTML } = require('./htmlTemplate.js');
+import express, { Request, Response } from 'express';
+import bodyParser from 'body-parser';
+import * as path from 'path';
+import { generatePDF } from './pdfGenerator';
+import { poData, PoData } from './sampleData';
+import { generatePurchaseOrderHTML } from './htmlTemplate';
+import * as fs from 'fs';
 
 const app = express();
 const PORT = 3000;
@@ -14,21 +15,21 @@ app.use(bodyParser.raw({ type: 'application/pdf', limit: '50mb' }));
 app.use(express.static('public'));
 
 // Serve the template HTML for preview
-app.get('/template', (req, res) => {
+app.get('/template', (req: Request, res: Response) => {
     const html = generatePurchaseOrderHTML(poData);
     res.send(html);
 });
 
 // Get sample data
-app.get('/api/sample-data', (req, res) => {
+app.get('/api/sample-data', (req: Request, res: Response) => {
     res.json(poData);
 });
 
 // Generate PDF with sample data
-app.post('/api/generate-pdf', async (req, res) => {
+app.post('/api/generate-pdf', async (req: Request, res: Response) => {
     try {
         console.log('Generating PDF...');
-        const data = req.body.data || poData;
+        const data: PoData = req.body.data || poData;
         console.log('Using data with PO Number:', data.header?.poNumber);
         
         const pdfBuffer = await generatePDF(data);
@@ -43,14 +44,15 @@ app.post('/api/generate-pdf', async (req, res) => {
         res.end(pdfBuffer, 'binary');
     } catch (error) {
         console.error('Error generating PDF:', error);
-        res.status(500).json({ error: 'Failed to generate PDF', message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        res.status(500).json({ error: 'Failed to generate PDF', message: errorMessage });
     }
 });
 
 // Generate PDF and download
-app.post('/api/download-pdf', async (req, res) => {
+app.post('/api/download-pdf', async (req: Request, res: Response) => {
     try {
-        const data = req.body.data || poData;
+        const data: PoData = req.body.data || poData;
         
         const pdfBuffer = await generatePDF(data);
         
@@ -60,21 +62,22 @@ app.post('/api/download-pdf', async (req, res) => {
         res.end(pdfBuffer, 'binary');
     } catch (error) {
         console.error('Error generating PDF:', error);
-        res.status(500).json({ error: 'Failed to generate PDF', message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        res.status(500).json({ error: 'Failed to generate PDF', message: errorMessage });
     }
 });
 
 // Update sample data (for testing)
-app.post('/api/update-data', (req, res) => {
+app.post('/api/update-data', (req: Request, res: Response) => {
     try {
-        const fs = require('fs');
-        const newData = req.body;
+        const newData: PoData = req.body;
         // Export as module format
         const dataString = `export const poData = ${JSON.stringify(newData, null, 2)};\n`;
-        fs.writeFileSync('./sampleData.js', dataString);
+        fs.writeFileSync('./sampleData.ts', dataString);
         res.json({ success: true, message: 'Sample data updated' });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to update data', message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        res.status(500).json({ error: 'Failed to update data', message: errorMessage });
     }
 });
 
