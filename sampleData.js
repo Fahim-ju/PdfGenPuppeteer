@@ -75,7 +75,7 @@ export const poData = {
     {
       item: "1:6",
       part: "C3498",
-      desc: "Aluminum tube  diameter Aluminum diameter Aluminum tube 25mm diameter x 3m length Aluminum tube  diameter Aluminum diameter Aluminum tube 25mm diameter x 3m length",
+      desc: "Aluminum tube Aluminum tube  diameter Aluminum diameter Aluminum Aluminum tube  diameter Aluminum diameter Aluminum tube 25mm diameter x 3m length Aluminum Aluminum tube  diameter Aluminum diameter Aluminum tube 25mm diameter x 3m length Alumin tube  diameter Aluminum diameter Aluminum tube 25mm diameter x 3m length",
       status: "Forecast",
       date: "1/15/26",
       qty: "1,000",
